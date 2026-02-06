@@ -1,0 +1,60 @@
+"use client"
+import Image from 'next/image';
+import React from 'react'
+import CartButton from '@/app/(user)/Components/CartButton';
+import { useRouter } from "next/navigation";
+
+
+const page = ({ products }) => {
+
+    const router = useRouter()
+
+    return (
+        <>
+            <div className="ml-5 mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 px-4 mt-10">
+                {products?.slice(0, 4).map((product) => (
+                    <div key={product?._id} className="shadow-lg">
+                        <div onClick={() => router.push(`/products/${product?._id}`)}>
+
+                            {/* Product Image */}
+                            <div className="w-full h-60 flex justify-center items-center bg-white rounded-lg overflow-hidden">
+                                <Image
+                                    src={product?.image.url}
+                                    alt={product?.name}
+                                    width={345}
+                                    height={240}
+                                    className="object-contain w-full h-60"
+                                />
+                            </div>
+                            <div className="p-4">
+
+                                <h2 className="text-lg font-semibold mb-1">
+                                    {product.name}
+                                </h2>
+
+                                <p className="text-lg font-bold text-green-600">
+                                    ₹{product.discountPrice.toLocaleString()}
+                                </p>
+
+                                <p className="text-sm line-through text-gray-500">
+                                    ₹{product.price.toLocaleString()}
+                                </p>
+
+                                <p className="text-sm mt-1">
+                                    ⭐ {product.rating} ({product.reviews || 0} reviews)
+                                </p>
+                            </div>
+                        </div>
+                        <div className='mb-4'>
+                            <div className="px-2 ">
+                                <CartButton product={product} />
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </>
+    )
+}
+
+export default page
